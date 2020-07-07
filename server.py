@@ -137,7 +137,7 @@ def deploy():
     template = path + script + ".$"
     scriptpath = path + script
     # github = "faas-ovh/api"
-    github = " faas-ovh/app-python-win"
+    github = "faas-ovh/app-python-win"
     createFileFromTemplate(scriptpath, template, {'domain': domain, 'folder': folder, 'github': github})
     bashScript(scriptpath, client)
 

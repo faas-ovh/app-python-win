@@ -1,5 +1,6 @@
 #!/bin/bash
 git --version
+ls
 git clone git://github.com/$github.git $folder
 cd $folder
 ls
