@@ -99,7 +99,7 @@ def template():
 
 
 
-@app.route('/query')
+@app.route('/query', methods=['GET', 'POST'])
 @auth.login_required
 def query():
     # if request.method == 'GET':
