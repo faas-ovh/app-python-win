@@ -106,8 +106,8 @@ def query():
     #     # return render_template('static/index.html')
     #     return app.send_static_file('index.html')
     # else:
-    environment = request.args['environment']
-    sourcecode = request.args['sourcecode']
+    # environment = request.args['environment']
+    # sourcecode = request.args['sourcecode']
     return '1'
     # return make_response(jsonify({ 'environment': environment, 'sourcecode': sourcecode }))
 
