@@ -1,5 +1,5 @@
 import jsonify as jsonify
-from flask import Flask,  stream_with_context, request, Response
+from flask import Flask,  stream_with_context, request, Response, render_template
 from flask_httpauth import HTTPBasicAuth
 from werkzeug.security import generate_password_hash, check_password_hash
 from ssh import *
@@ -103,7 +103,7 @@ def template():
 @auth.login_required
 def query():
     if request.method == 'GET':
-        return render_template('search.html')
+        return render_template('index.html')
     else:
         environment = request.args['environment']
         sourcecode = request.args['sourcecode']
