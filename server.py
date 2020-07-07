@@ -119,6 +119,9 @@ def remove():
     createFileFromTemplate(scriptpath, template, {'folder': folder})
     bashScript(scriptpath, client)
 
+    client.close()
+    return { 'server': Server.hostname, 'ip': Server.ip }
+
 
 @app.route('/deploy', methods=['GET', 'POST'])
 @auth.login_required

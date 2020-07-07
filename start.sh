@@ -1,2 +1,2 @@
 #!/bin/bash
-py server.py
+python3 server.py
