@@ -25,13 +25,14 @@ app = Flask(__name__)
 auth = HTTPBasicAuth()
 
 
-ip = "127.0.0.1"
+# ip = "127.0.0.1"
 ip = "93.90.201.35"
 # config = "..\\config\\app.json"
 config_server = os.path.join('..', 'config', 'server.json')
 config_app = os.path.join('..', 'config', 'app.json')
 Server = getBy(ip, 'ip', config_app)
-port = Server.port
+port = 80
+# Server.port
 # print(Server)
 
 users = {}
