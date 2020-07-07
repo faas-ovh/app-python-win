@@ -105,7 +105,7 @@ def index():
     if request.method == 'GET':
         return render_template('static/index.html')
     else:
-        word = request.form['']
+        word = request.form['environment']
         return word
 
 @app.route('/search', methods=['GET', 'POST'])
@@ -114,8 +114,9 @@ def search():
     if request.method == 'GET':
         return render_template('search.html')
     else:
-        word = request.form['word']
-        return word
+        environment = request.form['environment']
+        sourcecode = request.form['sourcecode']
+        return { 'environment': environment, 'sourcecode': sourcecode }
 
 
 @app.route('/remove', methods=['GET', 'POST'])
