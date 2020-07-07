@@ -100,6 +100,26 @@ def search():
         word = request.form['word']
         return word
 
+
+@app.route('/remove', methods=['GET', 'POST'])
+@auth.login_required
+def remove():
+    ip = "93.90.201.35"
+    config = "..\\config\\server.json"
+    Server = getBy(ip, 'ip', config)
+    client = connect(Server)
+
+    folder = "api.faas.ovh"
+
+    # remove
+    path = "environment\\python\\"
+    script = "remove.sh"
+    template = path + script + ".$"
+    scriptpath = path + script
+    createFileFromTemplate(scriptpath, template, {'folder': folder})
+    bashScript(scriptpath, client)
+
+
 @app.route('/deploy', methods=['GET', 'POST'])
 @auth.login_required
 def deploy():
@@ -109,14 +129,6 @@ def deploy():
     client = connect(Server)
 
     domain = folder = "api.faas.ovh"
-
-    # remove
-    path = "environment\\python\\"
-    script = "remove.sh"
-    template = path + script + ".$"
-    scriptpath = path + script
-    createFileFromTemplate(scriptpath, template, {'folder': folder})
-    bashScript(scriptpath, client)
 
     ## https://github.com/faas-ovh/api
     ## https://github.com/faas-ovh/app-python-win
