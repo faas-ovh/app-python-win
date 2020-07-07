@@ -1,0 +1,6 @@
+paramiko
+flask
+flask_httpauth
+werkzeug
+jsonify
+basic_auth
