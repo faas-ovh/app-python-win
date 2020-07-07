@@ -27,11 +27,11 @@ auth = HTTPBasicAuth()
 
 # ip = "127.0.0.1"
 # ip = "93.90.201.35"
-ip = "api.faas.ovh"
+domain = "app.faas.ovh"
 # config = "..\\config\\app.json"
 config_server = os.path.join('..', 'config', 'server.json')
 config_app = os.path.join('..', 'config', 'app.json')
-Server = getBy(ip, 'ip', config_app)
+Server = getBy(domain, 'domain', config_app)
 port = 80
 # Server.port
 # print(Server)
@@ -111,8 +111,8 @@ def search():
 @app.route('/remove', methods=['GET', 'POST'])
 @auth.login_required
 def remove():
-    ip = "93.90.201.35"
-    Server = getBy(ip, 'ip', config_server)
+    domain = "app.faas.ovh"
+    Server = getBy(domain, 'domain', config_server)
     client = connect(Server)
 
     folder = "api.faas.ovh"
@@ -132,8 +132,8 @@ def remove():
 @app.route('/deploy', methods=['GET', 'POST'])
 @auth.login_required
 def deploy():
-    ip = "93.90.201.35"
-    Server = getBy(ip, 'ip', config_server)
+    domain = "app.faas.ovh"
+    Server = getBy(domain, 'domain', config_server)
     client = connect(Server)
 
     domain = folder = "api.faas.ovh"
