@@ -112,7 +112,7 @@ def search():
 @auth.login_required
 def remove():
     domain = "app.faas.ovh"
-    Server = getBy(domain, 'domain', config_server)
+    Server = getBy(domain, 'hostname', config_server)
     client = connect(Server)
 
     folder = "api.faas.ovh"
@@ -133,7 +133,7 @@ def remove():
 @auth.login_required
 def deploy():
     domain = "app.faas.ovh"
-    Server = getBy(domain, 'domain', config_server)
+    Server = getBy(domain, 'hostname', config_server)
     client = connect(Server)
 
     domain = folder = "api.faas.ovh"
