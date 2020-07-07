@@ -1,5 +1,5 @@
 import jsonify as jsonify
-from flask import Flask,  stream_with_context, request, Response, render_template
+from flask import Flask,  stream_with_context, request, Response, render_template, make_response
 from flask_httpauth import HTTPBasicAuth
 from werkzeug.security import generate_password_hash, check_password_hash
 from ssh import *
@@ -108,7 +108,7 @@ def query():
     # else:
     environment = request.args['environment']
     sourcecode = request.args['sourcecode']
-    return { 'environment': environment, 'sourcecode': sourcecode }
+    return make_response(jsonify({ 'environment': environment, 'sourcecode': sourcecode }))
 
 
 @app.route('/remove', methods=['GET', 'POST'])
