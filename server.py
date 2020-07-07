@@ -99,6 +99,15 @@ def template():
     return text
 
 
+@app.route('/index', methods=['GET', 'POST'])
+@auth.login_required
+def index():
+    if request.method == 'GET':
+        return render_template('static/index.html')
+    else:
+        word = request.form['']
+        return word
+
 @app.route('/search', methods=['GET', 'POST'])
 @auth.login_required
 def search():
