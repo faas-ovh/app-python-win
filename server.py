@@ -108,7 +108,7 @@ def query():
     # else:
     # environment = request.args['environment']
     # sourcecode = request.json['sourcecode']
-    return jsonify(request.query_string)
+    return request.query_string
     # return make_response(jsonify({ 'environment': environment, 'sourcecode': sourcecode }))
 
 
