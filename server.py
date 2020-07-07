@@ -205,4 +205,4 @@ if __name__ == '__main__':
     # main(sys.argv[1:])
     # context = ('ssl.cert', 'ssl.key')
     # app.run(host='0.0.0.0', port=80, ssl_context=context)
-    app.run(host=ip, port=port)
+    app.run(host=domain, port=port)
