@@ -108,7 +108,8 @@ def query():
     # else:
     environment = request.args['environment']
     sourcecode = request.args['sourcecode']
-    return make_response(jsonify({ 'environment': environment, 'sourcecode': sourcecode }))
+    return '1'
+    # return make_response(jsonify({ 'environment': environment, 'sourcecode': sourcecode }))
 
 
 @app.route('/remove', methods=['GET', 'POST'])
