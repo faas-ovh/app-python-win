@@ -3,6 +3,7 @@ from flask import Flask
 from flask_httpauth import HTTPBasicAuth
 from werkzeug.security import generate_password_hash, check_password_hash
 from ssh import *
+import os
 import paramiko
 import json
 from collections import namedtuple
@@ -23,9 +24,12 @@ app = Flask(__name__)
 # hostname = '127.0.0.1'
 auth = HTTPBasicAuth()
 
+
 ip = "127.0.0.1"
-config = "..\\config\\app.json"
-Server = getBy(ip, 'ip', config)
+# config = "..\\config\\app.json"
+config_server = os.path.join('..', 'config', 'server.json')
+config_app = os.path.join('..', 'config', 'app.json')
+Server = getBy(ip, 'ip', config_app)
 port = Server.port
 # print(Server)
 
@@ -77,10 +81,10 @@ def createFileFromTemplate(newfile, template, vars):
 @app.route('/template')
 @auth.login_required
 def template():
-    path = "environment/python/"
-    filename = "install.sh.$"
-    template = path + filename
-    newfile = path + "install.sh"
+    # path = "environment/python/"
+    # path = os.path.join('environment', 'python')
+    template = os.path.join('environment', 'python', 'install.sh.$')
+    newfile = os.path.join('environment', 'python', 'install.sh')
     # document data
     domain = "app.goethe.pl"
     folder = "app.goethe.pl"
@@ -105,17 +109,16 @@ def search():
 @auth.login_required
 def remove():
     ip = "93.90.201.35"
-    config = "..\\config\\server.json"
-    Server = getBy(ip, 'ip', config)
+    Server = getBy(ip, 'ip', config_server)
     client = connect(Server)
 
     folder = "api.faas.ovh"
 
     # remove
-    path = "environment\\python\\"
+    # path = "environment\\python\\"
     script = "remove.sh"
-    template = path + script + ".$"
-    scriptpath = path + script
+    template =  os.path.join('environment', 'python', script + '.$')
+    scriptpath = os.path.join('environment', 'python', script)
     createFileFromTemplate(scriptpath, template, {'folder': folder})
     bashScript(scriptpath, client)
 
@@ -127,28 +130,27 @@ def remove():
 @auth.login_required
 def deploy():
     ip = "93.90.201.35"
-    config = "..\\config\\server.json"
-    Server = getBy(ip, 'ip', config)
+    Server = getBy(ip, 'ip', config_server)
     client = connect(Server)
 
     domain = folder = "api.faas.ovh"
 
     ## https://github.com/faas-ovh/api
     ## https://github.com/faas-ovh/app-python-win
-    path = "environment\\python\\"
+    # path = "environment\\python\\"
     script = "install.sh"
-    template = path + script + ".$"
-    scriptpath = path + script
+    template = os.path.join('environment', 'python', script + '.$')
+    scriptpath = os.path.join('environment', 'python', script)
     # github = "faas-ovh/api"
     github = "faas-ovh/app-python-win"
     createFileFromTemplate(scriptpath, template, {'domain': domain, 'folder': folder, 'github': github})
     bashScript(scriptpath, client)
 
     ## https://github.com/faas-ovh/www
-    path = "environment\\python-static\\"
+    # path = "environment\\python-static\\"
     script = "install.sh"
-    template = path + script + ".$"
-    scriptpath = path + script
+    template = os.path.join('environment', 'python-static', script + '.$')
+    scriptpath = os.path.join('environment', 'python-static', script)
     github = "faas-ovh/www"
     createFileFromTemplate(scriptpath, template, {'domain': domain, 'folder': folder, 'github': github})
     bashScript(scriptpath, client)
