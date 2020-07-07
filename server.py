@@ -77,7 +77,7 @@ def createFileFromTemplate(newfile, template, vars):
 @app.route('/template')
 @auth.login_required
 def template():
-    path = "env/python/"
+    path = "environment/python/"
     filename = "install.sh.$"
     template = path + filename
     newfile = path + "install.sh"
@@ -109,7 +109,7 @@ def deploy():
     client = connect(Server)
 
     ## https://github.com/faas-ovh/api
-    path = "env\\python\\"
+    path = "environment\\python\\"
     script = "install.sh"
     template = path + script + ".$"
     scriptpath = path + script
@@ -119,7 +119,7 @@ def deploy():
     bashScript(scriptpath, client)
 
     ## https://github.com/faas-ovh/www
-    path = "env\\python-static\\"
+    path = "environment\\python-static\\"
     script = "install.sh"
     template = path + script + ".$"
     scriptpath = path + script
@@ -140,7 +140,7 @@ def deploy2():
     # print(Server)
     client = connect(Server)
 
-    path = "env\\python\\"
+    path = "environment\\python\\"
     script = "install.sh"
     template = path + script + ".$"
     scriptpath = path + script

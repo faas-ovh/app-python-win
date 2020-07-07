@@ -1,0 +1,4 @@
+#!/bin/bash
+cd $folder
+rm -r static/* static/.*
+cd static && ls
