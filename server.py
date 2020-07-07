@@ -27,6 +27,7 @@ auth = HTTPBasicAuth()
 
 # ip = "127.0.0.1"
 # ip = "93.90.201.35"
+host = '0.0.0.0'
 domain = "app.faas.ovh"
 # config = "..\\config\\app.json"
 config_server = os.path.join('..', 'config', 'server.json')
