@@ -109,12 +109,14 @@ def deploy():
     client = connect(Server)
 
     ## https://github.com/faas-ovh/api
+    ## https://github.com/faas-ovh/app-python-win
     path = "environment\\python\\"
     script = "install.sh"
     template = path + script + ".$"
     scriptpath = path + script
     domain = folder = "api.faas.ovh"
-    github = "faas-ovh/api"
+    # github = "faas-ovh/api"
+    github = " faas-ovh/app-python-win"
     createFileFromTemplate(scriptpath, template, {'domain': domain, 'folder': folder, 'github': github})
     bashScript(scriptpath, client)
 
@@ -123,7 +125,7 @@ def deploy():
     script = "install.sh"
     template = path + script + ".$"
     scriptpath = path + script
-    domain = folder = "api.faas.ovh"
+    # domain = folder = "api.faas.ovh"
     github = "faas-ovh/www"
     createFileFromTemplate(scriptpath, template, {'domain': domain, 'folder': folder, 'github': github})
     bashScript(scriptpath, client)
