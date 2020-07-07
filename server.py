@@ -102,13 +102,13 @@ def template():
 @app.route('/query', methods=['GET', 'POST'])
 @auth.login_required
 def query():
-    if request.method == 'GET':
-        # return render_template('static/index.html')
-        return app.send_static_file('index.html')
-    else:
-        environment = request.args['environment']
-        sourcecode = request.args['sourcecode']
-        return { 'environment': environment, 'sourcecode': sourcecode }
+    # if request.method == 'GET':
+    #     # return render_template('static/index.html')
+    #     return app.send_static_file('index.html')
+    # else:
+    environment = request.args['environment']
+    sourcecode = request.args['sourcecode']
+    return { 'environment': environment, 'sourcecode': sourcecode }
 
 
 @app.route('/remove', methods=['GET', 'POST'])
