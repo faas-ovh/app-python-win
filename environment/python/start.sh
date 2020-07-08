@@ -1,4 +1,4 @@
 #!/bin/bash
 cd 2.faas.ovh
-sh install.sh
+sh start.sh
 ls

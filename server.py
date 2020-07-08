@@ -1,5 +1,5 @@
 import jsonify as jsonify
-from flask import Flask,  stream_with_context, request, Response, render_template, make_response
+from flask import Flask, stream_with_context, request, Response, render_template, make_response
 from flask_httpauth import HTTPBasicAuth
 from werkzeug.security import generate_password_hash, check_password_hash
 from ssh import *
@@ -23,7 +23,6 @@ app = Flask(__name__)
 # context = ('ssl.cert', 'ssl.key')
 # hostname = '127.0.0.1'
 auth = HTTPBasicAuth()
-
 
 # ip = "127.0.0.1"
 # ip = "93.90.201.35"
@@ -66,6 +65,7 @@ def test():
 
 from string import Template
 
+
 def getTextFromTemplateFile(file, vars):
     # open the file
     filein = open(file)
@@ -77,9 +77,11 @@ def getTextFromTemplateFile(file, vars):
     # print(result)
     return result
 
+
 def createFileFromTemplate(newfile, template, vars):
     text = getTextFromTemplateFile(template, vars)
     createFile(newfile, text)
+
 
 @app.route('/template')
 @auth.login_required
@@ -98,7 +100,6 @@ def template():
     return text
 
 
-
 @app.route('/query', methods=['GET', 'POST'])
 @auth.login_required
 def query():
@@ -110,7 +111,7 @@ def query():
     # sourcecode = request.json['sourcecode']
     # return request.query_string
     # return request.json['environment']
-    return { 'environment': request.json['environment'], 'sourcecode': request.json['sourcecode'] }
+    return {'environment': request.json['environment'], 'sourcecode': request.json['sourcecode']}
 
 
 @app.route('/remove', methods=['GET', 'POST'])
@@ -125,18 +126,104 @@ def remove():
     # remove
     # path = "environment\\python\\"
     script = "remove.sh"
-    template =  os.path.join('environment', 'python', script + '.$')
+    template = os.path.join('environment', 'python', script + '.$')
     scriptpath = os.path.join('environment', 'python', script)
     createFileFromTemplate(scriptpath, template, {'folder': folder})
     bashScript(scriptpath, client)
 
     client.close()
-    return { 'server': Server.hostname, 'ip': Server.ip }
+    return {'server': Server.hostname, 'ip': Server.ip}
+
+
+def getEnvironment():
+    return 'python'
+    # return request.json['environment']
+
+
+def getSourcecode():
+    return request.json['sourcecode']
+
+
+def getDomain():
+    return "2.faas.ovh"
+    # return request.json['domain']
+
+
+def getEnvList():
+    return {
+        # "0": {
+        #     "name": "python",
+        #     "command": "remove",
+        #     "github": "",
+        #     "domain": "",
+        #     "folder": "2.faas.ovh"
+        # },
+        "1": {
+            "name": "python",
+            "command": "download",
+            "github": "faas-ovh/app-python-win",
+            "domain": "2.faas.ovh",
+            "folder": "2.faas.ovh"
+        },
+        "2": {
+            "name": "python-static",
+            "command": "download",
+            "github": "faas-ovh/app-python-win",
+            "domain": "2.faas.ovh",
+            "folder": "2.faas.ovh"
+        },
+        "3": {
+            "name": "pip",
+            "command": "install",
+            "github": "",
+            "domain": "",
+            "folder": "2.faas.ovh"
+        },
+        "4": {
+            "name": "python",
+            "command": "install",
+            "github": "",
+            "domain": "",
+            "folder": "2.faas.ovh"
+        },
+        "5": {
+            "name": "python",
+            "command": "start",
+            "github": "",
+            "domain": "",
+            "folder": "2.faas.ovh"
+        },
+    }
 
 
 @app.route('/deploy', methods=['GET', 'POST'])
 @auth.login_required
 def deploy():
+    ## SSH connection
+    Server = getBy(getDomain(), 'hostname', config_server)
+    client = connect(Server)
+    os_ext_script = 'sh'
+    # Env List
+    result = {}
+    for e in getEnvList():
+        dict = getEnvList()[e]
+        # print(dict)
+        Env = namedtuple("Env", dict.keys())(*dict.values())
+        # print(Env.name, Env.command, Env.script, Env.folder, Env.github, Env.domain)
+        script = Env.command + '.' + os_ext_script
+        template = os.path.join('environment', Env.name, script + '.$')
+        scriptpath = os.path.join('environment', Env.name, script)
+        createFileFromTemplate(scriptpath, template, {'domain': Env.domain, 'folder': Env.folder, 'github': Env.github})
+        bashScript(scriptpath, client)
+        result[e] = {Env.name: Env.command}
+
+    client.close()
+    return {'server': Server.hostname, 'ip': Server.ip, 'result': result}
+
+
+@app.route('/deploy1', methods=['GET', 'POST'])
+@auth.login_required
+def deploy1():
     domain = "app.faas.ovh"
     Server = getBy(domain, 'hostname', config_server)
     client = connect(Server)
@@ -164,7 +251,8 @@ def deploy():
     bashScript(scriptpath, client)
 
     client.close()
-    return { 'server': Server.hostname, 'ip': Server.ip }
+    return {'server': Server.hostname, 'ip': Server.ip}
+
 
 @app.route('/deploy2')
 @auth.login_required
@@ -186,7 +274,7 @@ def deploy2():
     # folder = "api.faas.ovh"
     bashScript(scriptpath, client)
     client.close()
-    return { 'server': Server.hostname, 'ip': Server.ip }
+    return {'server': Server.hostname, 'ip': Server.ip}
     # return jsonify({'message': format(auth.current_user())})
 
 

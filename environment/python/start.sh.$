@@ -1,4 +1,4 @@
 #!/bin/bash
 cd $folder
-sh install.sh
+sh start.sh
 ls
