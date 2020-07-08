@@ -54,13 +54,15 @@ from deploy import *
 @app.route('/deploy', methods=['GET', 'POST'])
 @auth.login_required
 def deploy():
+    # 2.faas.ovh
+    domain = request.json["domain"]
     ## SSH connection
-    Server = getBy(getDomain(), 'hostname', config_server)
+    Server = getBy(domain, 'hostname', config_server)
     client = connect(Server)
     os_ext_script = 'sh'
     # Env List
     result = {}
-    list = getEnvList("goethe-pl/app", "goethe-pl/app-python", "python")
+    list = getEnvList(request.json["frontend"], request.json["backend"], "python")
     for e in list:
         dict = list[e]
         # print(dict)
@@ -73,7 +75,7 @@ def deploy():
         bashScript(scriptpath, client)
         result[e] = {Env.name: Env.command}
 
-    list = getEnvProjects("2.faas.ovh", ["install", "start"])
+    list = getEnvProjects(domain, ["install", "start"])
     for e in list:
         dict = list[e]
         # print(dict)
@@ -89,24 +91,8 @@ def deploy():
     client.close()
     return {'server': Server.hostname, 'ip': Server.ip, 'result': result}
 
+
 # pobieranie z git env
-
-@app.route('/template')
-@auth.login_required
-def template():
-    # path = "environment/python/"
-    # path = os.path.join('environment', 'python')
-    template = os.path.join('environment', 'python', 'install.sh.$')
-    newfile = os.path.join('environment', 'python', 'install.sh')
-    # document data
-    domain = "app.goethe.pl"
-    folder = "app.goethe.pl"
-    github = "goethe-pl/app"
-    vars = {'domain': domain, 'folder': folder, 'github': github}
-    text = getTextFromTemplateFile(template, vars)
-    createFile(newfile, text)
-    return text
-
 
 @app.route('/query', methods=['GET', 'POST'])
 @auth.login_required

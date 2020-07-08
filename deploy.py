@@ -10,9 +10,6 @@ def getSourcecode():
     return request.json['sourcecode']
 
 
-def getDomain():
-    return "2.faas.ovh"
-    # return request.json['domain']
 
 def getEnvList(frontend, backend, environment):
     return {
