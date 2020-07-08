@@ -42,13 +42,13 @@ def getEnvList(frontend, backend, environment):
             "domain": "2.faas.ovh",
             "folder": "2.faas.ovh"
         },
-        "4": {
-            "name": environment,
-            "command": "install",
-            "github": "",
-            "domain": "",
-            "folder": "2.faas.ovh"
-        },
+        # "4": {
+        #     "name": environment,
+        #     "command": "install",
+        #     "github": "",
+        #     "domain": "",
+        #     "folder": "2.faas.ovh"
+        # },
     }
 
 def getEnvProjects(folder, commands):

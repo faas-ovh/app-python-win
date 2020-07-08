@@ -75,7 +75,8 @@ def deploy():
         bashScript(scriptpath, client)
         result[e] = {Env.name: Env.command}
 
-    list = getEnvProjects(domain, ["stop", "install", "start"])
+    # list = getEnvProjects(domain, ["stop", "install", "start"])
+    list = getEnvProjects(domain, ["install", "start"])
     for e in list:
         dict = list[e]
         # print(dict)
