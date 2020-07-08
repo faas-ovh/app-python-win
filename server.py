@@ -105,7 +105,8 @@ def query():
     # sourcecode = request.json['sourcecode']
     # return request.query_string
     # return request.json['environment']
-    return {'environment': request.json['environment'], 'sourcecode': request.json['sourcecode']}
+    # return {'environment': request.json['environment'], 'sourcecode': request.json['sourcecode']}
+    return {'environment': request.json}
 
 
 @app.route('/remove', methods=['GET', 'POST'])
