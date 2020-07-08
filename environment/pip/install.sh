@@ -1,5 +1,5 @@
 #!/bin/bash
-cd $folder
+cd 2.faas.ovh
 apt update -y
 #apt install python-pip -y
 apt install python3-pip -y

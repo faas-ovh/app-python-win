@@ -151,13 +151,13 @@ def getDomain():
 
 def getEnvList():
     return {
-        # "0": {
-        #     "name": "python",
-        #     "command": "remove",
-        #     "github": "",
-        #     "domain": "",
-        #     "folder": "2.faas.ovh"
-        # },
+        "0": {
+            "name": "python",
+            "command": "remove",
+            "github": "",
+            "domain": "",
+            "folder": "2.faas.ovh"
+        },
         "1": {
             "name": "python",
             "command": "download",
@@ -168,7 +168,8 @@ def getEnvList():
         "2": {
             "name": "python-static",
             "command": "download",
-            "github": "faas-ovh/app-python-win",
+            # "github": "faas-ovh/www",
+            "github": "goethe-pl/app",
             "domain": "2.faas.ovh",
             "folder": "2.faas.ovh"
         },
@@ -186,6 +187,12 @@ def getEnvList():
             "domain": "",
             "folder": "2.faas.ovh"
         },
+        # "4": {
+        #     "name": "copy-folder",
+        #     "command": "copy",
+        #     "from": "2.faas.ovh"
+        #     "to": "2.faas.ovh"
+        # },
         "5": {
             "name": "python",
             "command": "start",

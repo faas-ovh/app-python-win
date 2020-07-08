@@ -1,3 +1,4 @@
 #!/bin/bash
-rm -r api.faas.ovh
+rm -r 2.faas.ovh
+pkill -f python
 ls
