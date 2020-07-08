@@ -80,8 +80,3 @@ def getBy(value, name, config):
         if dict[name] == value:
             return Server
     Exception("Server with hostname: " + value + " Not Exits")
-
-def createFile(file, text):
-    file = open(file, "w")
-    file.write(text)
-    file.close()

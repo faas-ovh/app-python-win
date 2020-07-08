@@ -91,6 +91,8 @@ def deploy():
 
 # pobieranie z git env
 
+
+
 @app.route('/template')
 @auth.login_required
 def template():
@@ -141,6 +143,124 @@ def remove():
 
     client.close()
     return {'server': Server.hostname, 'ip': Server.ip}
+
+
+
+def getEnvList2():
+    return {
+        "0": {
+            "name": "python",
+            "command": "remove",
+            "github": "",
+            "domain": "",
+            "folder": "2.faas.ovh"
+        },
+        "1": {
+            "name": "python",
+            "command": "download",
+            "github": "faas-ovh/app-python-win",
+            "domain": "2.faas.ovh",
+            "folder": "2.faas.ovh"
+        },
+        "2": {
+            "name": "python-static",
+            "command": "download",
+            # "github": "faas-ovh/www",
+            "github": "goethe-pl/app",
+            "domain": "2.faas.ovh",
+            "folder": "2.faas.ovh"
+        },
+        "3": {
+            "name": "pip",
+            "command": "install",
+            "github": "",
+            "domain": "",
+            "folder": "2.faas.ovh"
+        },
+        "4": {
+            "name": "python",
+            "command": "install",
+            "github": "",
+            "domain": "",
+            "folder": "2.faas.ovh"
+        },
+        # "4": {
+        #     "name": "copy-folder",
+        #     "command": "copy",
+        #     "from": "2.faas.ovh"
+        #     "to": "2.faas.ovh"
+        # },
+        "5": {
+            "name": "python",
+            "command": "start",
+            "github": "",
+            "domain": "",
+            "folder": "2.faas.ovh"
+        },
+    }
+
+
+@app.route('/deploy1', methods=['GET', 'POST'])
+@auth.login_required
+def deploy1():
+    domain = "app.faas.ovh"
+    Server = getBy(domain, 'hostname', config_server)
+    client = connect(Server)
+
+    domain = folder = "api.faas.ovh"
+
+    ## https://github.com/faas-ovh/api
+    ## https://github.com/faas-ovh/app-python-win
+    # path = "environment\\python\\"
+    script = "install.sh"
+    template = os.path.join('environment', 'python', script + '.$')
+    scriptpath = os.path.join('environment', 'python', script)
+    # github = "faas-ovh/api"
+    github = "faas-ovh/app-python-win"
+    createFileFromTemplate(scriptpath, template, {'domain': domain, 'folder': folder, 'github': github})
+    bashScript(scriptpath, client)
+
+    ## https://github.com/faas-ovh/www
+    # path = "environment\\python-static\\"
+    script = "install.sh"
+    template = os.path.join('environment', 'python-static', script + '.$')
+    scriptpath = os.path.join('environment', 'python-static', script)
+    github = "faas-ovh/www"
+    createFileFromTemplate(scriptpath, template, {'domain': domain, 'folder': folder, 'github': github})
+    bashScript(scriptpath, client)
+
+    client.close()
+    return {'server': Server.hostname, 'ip': Server.ip}
+
+
+@app.route('/deploy2')
+@auth.login_required
+def deploy2():
+    ip = "93.90.201.35"
+    config = "..\\config\\server.json"
+    Server = getBy(ip, 'ip', config)
+    # print(Server)
+    client = connect(Server)
+
+    path = "environment/project\\"
+    script = "install.sh"
+    template = path + script + ".$"
+    scriptpath = path + script
+    domain = "app.goethe.pl"
+    folder = "app.goethe.pl"
+    github = "goethe-pl/app"
+    createFileFromTemplate(scriptpath, template, {'domain': domain, 'folder': folder, 'github': github})
+    # folder = "api.faas.ovh"
+    bashScript(scriptpath, client)
+    client.close()
+    return {'server': Server.hostname, 'ip': Server.ip}
+    # return jsonify({'message': format(auth.current_user())})
+
+
+# @app.route('/api/secret')
+# def api_secret():
+#     return jsonify({'message': get_secret_message()})
+
 
 def authenticate():
     message = {'message': "Authenticate."}
