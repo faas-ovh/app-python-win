@@ -2,7 +2,9 @@ import jsonify as jsonify
 from flask import Flask, stream_with_context, request, Response, render_template, make_response
 from flask_httpauth import HTTPBasicAuth
 from werkzeug.security import generate_password_hash, check_password_hash
+from config import *
 from ssh import *
+from deploy import *
 import os
 import paramiko
 import json
@@ -23,18 +25,6 @@ app = Flask(__name__)
 # context = ('ssl.cert', 'ssl.key')
 # hostname = '127.0.0.1'
 auth = HTTPBasicAuth()
-
-# ip = "127.0.0.1"
-# ip = "93.90.201.35"
-host = '0.0.0.0'
-domain = "app.faas.ovh"
-# config = "..\\config\\app.json"
-config_server = os.path.join('..', 'config', 'server.json')
-config_app = os.path.join('..', 'config', 'app.json')
-Server = getBy(domain, 'domain', config_app)
-port = 80
-# Server.port
-# print(Server)
 
 users = {}
 users[Server.username] = generate_password_hash(Server.password)
@@ -135,19 +125,6 @@ def remove():
     return {'server': Server.hostname, 'ip': Server.ip}
 
 
-def getEnvironment():
-    return 'python'
-    # return request.json['environment']
-
-
-def getSourcecode():
-    return request.json['sourcecode']
-
-
-def getDomain():
-    return "2.faas.ovh"
-    # return request.json['domain']
-
 
 def getEnvList2():
     return {
@@ -201,117 +178,6 @@ def getEnvList2():
             "folder": "2.faas.ovh"
         },
     }
-
-def getEnvList(frontend, backend, environment):
-    return {
-        "0": {
-            "name": "project",
-            "command": "stop",
-            "github": "",
-            "domain": "",
-            "folder": "2.faas.ovh"
-        },
-        "1": {
-            "name": "project",
-            "command": "remove",
-            "github": "",
-            "domain": "",
-            "folder": "2.faas.ovh"
-        },
-        "2": {
-            "name": "project",
-            "command": "download",
-            "github": backend,
-            "domain": "2.faas.ovh",
-            "folder": "2.faas.ovh"
-        },
-        "3": {
-            "name": "project-static",
-            "command": "download",
-            # "github": "faas-ovh/www",
-            "github": frontend,
-            "domain": "2.faas.ovh",
-            "folder": "2.faas.ovh"
-        },
-        "4": {
-            "name": environment,
-            "command": "install",
-            "github": "",
-            "domain": "",
-            "folder": "2.faas.ovh"
-        },
-    }
-
-def getEnvProjects(folder, commands):
-    result = {}
-    x=1
-    for cmd in commands:
-        result[x] = {
-            "name": "project",
-            "command": cmd,
-            "folder": folder
-        }
-        x += 1
-    # print(result)
-    return result
-
-    # return {
-    #     "4": {
-    #         "name": "project",
-    #         "command": "install",
-    #         "folder": "2.faas.ovh"
-    #     },
-        # "4": {
-        #     "name": "copy-folder",
-        #     "command": "copy",
-        #     "from": "2.faas.ovh"
-        #     "to": "2.faas.ovh"
-        # },
-    #     "5": {
-    #         "name": "project",
-    #         "command": "start",
-    #         "folder": "2.faas.ovh"
-    #     },
-    # }
-
-
-@app.route('/deploy', methods=['GET', 'POST'])
-@auth.login_required
-def deploy():
-    ## SSH connection
-    Server = getBy(getDomain(), 'hostname', config_server)
-    client = connect(Server)
-    os_ext_script = 'sh'
-    # Env List
-    result = {}
-    list = getEnvList("goethe-pl/app", "goethe-pl/app-python", "python")
-    for e in list:
-        dict = list[e]
-        # print(dict)
-        Env = namedtuple("Env", dict.keys())(*dict.values())
-        # print(Env.name, Env.command, Env.script, Env.folder, Env.github, Env.domain)
-        script = Env.command + '.' + os_ext_script
-        template = os.path.join('environment', Env.name, script + '.$')
-        scriptpath = os.path.join('environment', Env.name, script)
-        createFileFromTemplate(scriptpath, template, {'domain': Env.domain, 'folder': Env.folder, 'github': Env.github})
-        bashScript(scriptpath, client)
-        result[e] = {Env.name: Env.command}
-
-    list = getEnvProjects("2.faas.ovh", ["install", "start"])
-    for e in list:
-        dict = list[e]
-        # print(dict)
-        Env = namedtuple("Env", dict.keys())(*dict.values())
-        # print(Env.name, Env.command, Env.script, Env.folder, Env.github, Env.domain)
-        script = Env.command + '.' + os_ext_script
-        template = os.path.join('environment', Env.name, script + '.$')
-        scriptpath = os.path.join('environment', Env.name, script)
-        createFileFromTemplate(scriptpath, template, {'folder': Env.folder})
-        bashScript(scriptpath, client)
-        result[e] = {Env.name: Env.command}
-
-    client.close()
-    return {'server': Server.hostname, 'ip': Server.ip, 'result': result}
 
 
 @app.route('/deploy1', methods=['GET', 'POST'])
