@@ -49,7 +49,9 @@ def index():
 def test():
     return auth.current_user()
 
+
 from deploy import *
+
 
 @app.route('/deploy', methods=['GET', 'POST'])
 @auth.login_required
@@ -62,18 +64,33 @@ def deploy():
     os_ext_script = 'sh'
     # Env List
     result = {}
-    list = getEnvList(request.json["frontend"], request.json["backend"], "python")
-    for e in list:
-        dict = list[e]
-        # print(dict)
-        Env = namedtuple("Env", dict.keys())(*dict.values())
-        # print(Env.name, Env.command, Env.script, Env.folder, Env.github, Env.domain)
-        script = Env.command + '.' + os_ext_script
-        template = os.path.join('environment', Env.name, script + '.$')
-        scriptpath = os.path.join('environment', Env.name, script)
-        createFileFromTemplate(scriptpath, template, {'domain': Env.domain, 'folder': Env.folder, 'github': Env.github})
-        bashScript(scriptpath, client)
-        result[e] = {Env.name: Env.command}
+    if (request.json["backend"]):
+        list = getEnvList(request.json["backend"], "project")
+        for e in list:
+            dict = list[e]
+            # print(dict)
+            Env = namedtuple("Env", dict.keys())(*dict.values())
+            # print(Env.name, Env.command, Env.script, Env.folder, Env.github, Env.domain)
+            script = Env.command + '.' + os_ext_script
+            template = os.path.join('environment', Env.name, script + '.$')
+            scriptpath = os.path.join('environment', Env.name, script)
+            createFileFromTemplate(scriptpath, template, {'domain': Env.domain, 'folder': Env.folder, 'github': Env.github})
+            bashScript(scriptpath, client)
+            result[e] = {Env.name: Env.command}
+
+    if (request.json["frontend"]):
+        list = getGithub("faas-ovh/www", "project-static", "2.faas.ovh")
+        for e in list:
+            dict = list[e]
+            # print(dict)
+            Env = namedtuple("Env", dict.keys())(*dict.values())
+            # print(Env.name, Env.command, Env.script, Env.folder, Env.github, Env.domain)
+            script = Env.command + '.' + os_ext_script
+            template = os.path.join('environment', Env.name, script + '.$')
+            scriptpath = os.path.join('environment', Env.name, script)
+            createFileFromTemplate(scriptpath, template, {'domain': Env.domain, 'folder': Env.folder, 'github': Env.github})
+            bashScript(scriptpath, client)
+            result[e] = {Env.name: Env.command}
 
     # list = getEnvProjects(domain, ["stop", "install", "start"])
     list = getEnvProjects(domain, ["install", "start"])
@@ -129,6 +146,7 @@ def remove():
 
     client.close()
     return {'server': Server.hostname, 'ip': Server.ip}
+
 
 def authenticate():
     message = {'message': "Authenticate."}
