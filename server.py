@@ -52,7 +52,10 @@ def test():
 
 from deploy import *
 
-
+# poprzenosic do innego pliku
+# stworzyc plik konfiguracyjny: txt/json/yaml/xml
+# jaka biblioteka do konwersji pomiedzy formatami? txt/json/yaml/xml
+# przeniesienie do apiexec
 @app.route('/deploy', methods=['GET', 'POST'])
 @auth.login_required
 def deploy():
