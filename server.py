@@ -63,7 +63,7 @@ def deploy():
     domain = "2.faas.ovh"
     # if (request.json["domain"]):
     print(request.json)
-    if (request.json):
+    if "domain" in request.json:
         domain = request.json["domain"]
 
     ## SSH connection
@@ -73,7 +73,7 @@ def deploy():
 
     # Env List
     result = {}
-    if (request.json["backend"]):
+    if "backend" in request.json:
         list = getEnvList(request.json["backend"], "project-backend")
         for e in list:
             dict = list[e]
@@ -87,7 +87,7 @@ def deploy():
             bashScript(scriptpath, client)
             result[e] = {Env.name: Env.command}
 
-    if (request.json["frontend"]):
+    if "frontend" in request.json:
         list = getGithub(request.json["frontend"], "project-static", request.json["domain"])
         for e in list:
             dict = list[e]
@@ -101,7 +101,7 @@ def deploy():
             bashScript(scriptpath, client)
             result[e] = {Env.name: Env.command}
 
-    if (request.json["database"]):
+    if "database" in request.json:
         list = getGithub(request.json["database"], "project-database", request.json["domain"])
         # for e in list:
         #     dict = list[e]
@@ -115,7 +115,7 @@ def deploy():
         #     bashScript(scriptpath, client)
         #     result[e] = {Env.name: Env.command}
 
-    if (request.json["sourcecode"]):
+    if "sourcecode" in request.json:
         list = getGithub("faas-ovh/www", "project-github", request.json["domain"])
         # for e in list:
         #     dict = list[e]
@@ -129,7 +129,7 @@ def deploy():
         #     bashScript(scriptpath, client)
         #     result[e] = {Env.name: Env.command}
 
-    if (request.json["environment"]):
+    if "environment" in request.json:
         list = getGithub("faas-ovh/www", "project-environment", request.json["domain"])
         # for e in list:
         #     dict = list[e]
@@ -157,7 +157,7 @@ def deploy():
         #     bashScript(scriptpath, client)
         #     result[e] = {Env.name: Env.command}
 
-    if (request.json["ip"]):
+    if "ip" in request.json:
         list = getGithub("faas-ovh/www", "project-domain", request.json["domain"])
         # for e in list:
         #     dict = list[e]
