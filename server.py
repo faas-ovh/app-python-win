@@ -62,7 +62,8 @@ def deploy():
     ## Domain
     domain = "2.faas.ovh"
     # if (request.json["domain"]):
-    if (request.get('domain')):
+    print(request.json)
+    if (request.json):
         domain = request.json["domain"]
 
     ## SSH connection
