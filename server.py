@@ -68,7 +68,7 @@ def deploy():
     # Env List
     result = {}
     if (request.json["backend"]):
-        list = getEnvList(request.json["backend"], "project")
+        list = getEnvList(request.json["backend"], "project-backend")
         for e in list:
             dict = list[e]
             # print(dict)

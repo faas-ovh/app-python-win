@@ -1,0 +1,4 @@
+#!/bin/bash
+cd $folder
+sh install.sh
+ls
