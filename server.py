@@ -88,7 +88,7 @@ def deploy():
             result[e] = {Env.name: Env.command}
 
     if "frontend" in request.json:
-        list = getGithub(request.json["frontend"], "project-static", request.json["domain"])
+        list = getGithub(request.json["frontend"], "project-static", domain)
         for e in list:
             dict = list[e]
             # print(dict)
@@ -102,7 +102,7 @@ def deploy():
             result[e] = {Env.name: Env.command}
 
     if "database" in request.json:
-        list = getGithub(request.json["database"], "project-database", request.json["domain"])
+        list = getGithub(request.json["database"], "project-database", domain)
         # for e in list:
         #     dict = list[e]
         #     # print(dict)
@@ -116,7 +116,7 @@ def deploy():
         #     result[e] = {Env.name: Env.command}
 
     if "sourcecode" in request.json:
-        list = getGithub(request.json["frontend"], "project-static", request.json["domain"])
+        list = getGithub(request.json["sourcecode"], "project-static", domain)
         for e in list:
             dict = list[e]
             # print(dict)
@@ -130,7 +130,7 @@ def deploy():
             result[e] = {Env.name: Env.command}
 
     if "environment" in request.json:
-        list = getGithub("faas-ovh/www", "project-environment", request.json["domain"])
+        list = getGithub("faas-ovh/www", "project-environment", domain)
         # for e in list:
         #     dict = list[e]
         #     # print(dict)
@@ -143,8 +143,8 @@ def deploy():
         #     bashScript(scriptpath, client)
         #     result[e] = {Env.name: Env.command}
 
-    # if (request.json["domain"]):
-    #     list = getGithub("faas-ovh/www", "project-domain", request.json["domain"])
+    # if (domain):
+    #     list = getGithub("faas-ovh/www", "project-domain", domain)
         # for e in list:
         #     dict = list[e]
         #     # print(dict)
@@ -158,7 +158,7 @@ def deploy():
         #     result[e] = {Env.name: Env.command}
 
     if "ip" in request.json:
-        list = getGithub("faas-ovh/www", "project-domain", request.json["domain"])
+        list = getGithub("faas-ovh/www", "project-domain", domain)
         # for e in list:
         #     dict = list[e]
         #     # print(dict)
