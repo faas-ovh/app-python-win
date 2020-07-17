@@ -59,12 +59,16 @@ from deploy import *
 @app.route('/deploy', methods=['GET', 'POST'])
 @auth.login_required
 def deploy():
-    # 2.faas.ovh
-    domain = request.json["domain"]
+    ## Domain
+    domain = "2.faas.ovh"
+    if (request.json["domain"]):
+        domain = request.json["domain"]
+
     ## SSH connection
     Server = getBy(domain, 'hostname', config_server)
     client = connect(Server)
     os_ext_script = 'sh'
+
     # Env List
     result = {}
     if (request.json["backend"]):
@@ -137,8 +141,8 @@ def deploy():
         #     bashScript(scriptpath, client)
         #     result[e] = {Env.name: Env.command}
 
-    if (request.json["domain"]):
-        list = getGithub("faas-ovh/www", "project-domain", request.json["domain"])
+    # if (request.json["domain"]):
+    #     list = getGithub("faas-ovh/www", "project-domain", request.json["domain"])
         # for e in list:
         #     dict = list[e]
         #     # print(dict)
