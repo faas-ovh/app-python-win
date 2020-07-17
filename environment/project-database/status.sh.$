@@ -1,0 +1,5 @@
+#!/bin/bash
+ls
+netstat -lpn |grep :'80'
+py --version
+git --version

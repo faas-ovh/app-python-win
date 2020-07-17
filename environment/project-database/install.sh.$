@@ -1,0 +1,5 @@
+#!/bin/bash
+cd $folder
+git clone git://github.com/$github.git static
+cd static
+ls

@@ -1,0 +1,2 @@
+#!/bin/bash
+cd $folder/static && git pull origin master

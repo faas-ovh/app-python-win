@@ -97,31 +97,31 @@ def deploy():
 
     if (request.json["database"]):
         list = getGithub(request.json["database"], "project-database", request.json["domain"])
-        for e in list:
-            dict = list[e]
-            # print(dict)
-            Env = namedtuple("Env", dict.keys())(*dict.values())
-            # print(Env.name, Env.command, Env.script, Env.folder, Env.github, Env.domain)
-            script = Env.command + '.' + os_ext_script
-            template = os.path.join('environment', Env.name, script + '.$')
-            scriptpath = os.path.join('environment', Env.name, script)
-            createFileFromTemplate(scriptpath, template, {'domain': Env.domain, 'folder': Env.folder, 'github': Env.github})
-            bashScript(scriptpath, client)
-            result[e] = {Env.name: Env.command}
+        # for e in list:
+        #     dict = list[e]
+        #     # print(dict)
+        #     Env = namedtuple("Env", dict.keys())(*dict.values())
+        #     # print(Env.name, Env.command, Env.script, Env.folder, Env.github, Env.domain)
+        #     script = Env.command + '.' + os_ext_script
+        #     template = os.path.join('environment', Env.name, script + '.$')
+        #     scriptpath = os.path.join('environment', Env.name, script)
+        #     createFileFromTemplate(scriptpath, template, {'domain': Env.domain, 'folder': Env.folder, 'github': Env.github})
+        #     bashScript(scriptpath, client)
+        #     result[e] = {Env.name: Env.command}
 
     if (request.json["domain"]):
         list = getGithub("faas-ovh/www", "project-domain", request.json["domain"])
-        for e in list:
-            dict = list[e]
-            # print(dict)
-            Env = namedtuple("Env", dict.keys())(*dict.values())
-            # print(Env.name, Env.command, Env.script, Env.folder, Env.github, Env.domain)
-            script = Env.command + '.' + os_ext_script
-            template = os.path.join('environment', Env.name, script + '.$')
-            scriptpath = os.path.join('environment', Env.name, script)
-            createFileFromTemplate(scriptpath, template, {'domain': Env.domain, 'folder': Env.folder, 'github': Env.github})
-            bashScript(scriptpath, client)
-            result[e] = {Env.name: Env.command}
+        # for e in list:
+        #     dict = list[e]
+        #     # print(dict)
+        #     Env = namedtuple("Env", dict.keys())(*dict.values())
+        #     # print(Env.name, Env.command, Env.script, Env.folder, Env.github, Env.domain)
+        #     script = Env.command + '.' + os_ext_script
+        #     template = os.path.join('environment', Env.name, script + '.$')
+        #     scriptpath = os.path.join('environment', Env.name, script)
+        #     createFileFromTemplate(scriptpath, template, {'domain': Env.domain, 'folder': Env.folder, 'github': Env.github})
+        #     bashScript(scriptpath, client)
+        #     result[e] = {Env.name: Env.command}
 
     # list = getEnvProjects(domain, ["stop", "install", "start"])
     list = getEnvProjects(domain, ["install", "start"])
