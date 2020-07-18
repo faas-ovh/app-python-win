@@ -1,4 +1,4 @@
-
+import os
 from string import Template
 
 
@@ -24,3 +24,21 @@ def createFile(file, text):
     file = open(file, "w")
     file.write(text)
     file.close()
+
+
+def envTemplate(Env):
+    os_ext_script = 'sh'
+    script = Env.command + '.' + os_ext_script
+    template = os.path.join('environment', Env.name, script + '.$')
+    scriptpath = os.path.join('environment', Env.name, script)
+    createFileFromTemplate(scriptpath, template, {'folder': Env.folder})
+    return scriptpath
+
+
+def sourcecodeTemplate(Env):
+    os_ext_script = 'sh'
+    script = Env.command + '.' + os_ext_script
+    template = os.path.join('environment', Env.name, script + '.$')
+    scriptpath = os.path.join('environment', Env.name, script)
+    createFileFromTemplate(scriptpath, template, {'domain': Env.domain, 'folder': Env.folder, 'github': Env.github})
+    return scriptpath
