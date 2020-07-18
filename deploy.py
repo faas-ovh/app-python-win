@@ -11,28 +11,28 @@ def getSourcecode():
 
 
 
-def getEnvList(backend, environment):
+def getEnvList(backend, environment, folder):
     return {
         "0": {
             "name": environment,
             "command": "stop",
             "github": "",
             "domain": "",
-            "folder": "2.faas.ovh"
+            "folder": folder
         },
         "1": {
             "name": environment,
             "command": "remove",
             "github": "",
             "domain": "",
-            "folder": "2.faas.ovh"
+            "folder": folder
         },
         "2": {
             "name": environment,
             "command": "download",
             "github": backend,
             "domain": "2.faas.ovh",
-            "folder": "2.faas.ovh"
+            "folder": folder
         },
         # "3": {
         #     "name": "project-static",
