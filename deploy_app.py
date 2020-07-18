@@ -77,7 +77,6 @@ def getEnvProjects(folder, commands):
     return result
 
 
-
 # poprzenosic do innego pliku
 # stworzyc plik konfiguracyjny: txt/json/yaml/xml
 # jaka biblioteka do konwersji pomiedzy formatami? txt/json/yaml/xml
