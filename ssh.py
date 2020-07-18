@@ -6,15 +6,19 @@ from collections import namedtuple
 
 
 def commandList(commands, client):
+    result = []
+    x=0
     # execute the commands
     for command in commands:
         print("=" * 50, command, "=" * 50)
         stdin, stdout, stderr = client.exec_command(command)
-        print(stdout.read().decode())
+        # print(stdout.read().decode())
         err = stderr.read().decode()
         if err:
             print(err)
-
+        x+=1
+        result[x] = stdout.read().decode()
+    return result
 
 def bashScript(filename, client):
     # read the BASH script content from the file

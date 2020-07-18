@@ -53,7 +53,6 @@ def test():
 from deploy_app import *
 
 
-
 # poprzenosic do innego pliku
 # stworzyc plik konfiguracyjny: txt/json/yaml/xml
 # jaka biblioteka do konwersji pomiedzy formatami? txt/json/yaml/xml
@@ -91,10 +90,10 @@ def deploy():
                 print(dict)
                 Env = namedtuple("Env", dict.keys())(*dict.values())
                 # print(Env.name, Env.command, Env.script, Env.folder, Env.github, Env.domain)
-                scriptpath = envTemplate(Env)
-                bashScript(scriptpath, client)
-                result['command'][e] = {Env.name: Env.command}
-
+                commands = commandList(["cd " + Env.folder, "ls " + Env.folder, ], client)
+                # scriptpath = envTemplate(Env)
+                # bashScript(scriptpath, client)
+                result['command'][e] = {Env.name: Env.command, 'commands': commands}
 
         if "sourcecode" in request.json:
             print("sourcecode:")
@@ -148,10 +147,9 @@ def deploy():
             #     bashScript(scriptpath, client)
             #     result[e] = {Env.name: Env.command}
 
-
-
         client.close()
     return {'server': Server.hostname, 'ip': Server.ip, 'result': result}
+
 
 # pobieranie z git env
 
