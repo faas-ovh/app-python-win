@@ -99,6 +99,17 @@ def deploy():
         "command": {},
     }
 
+    if "environment" in request.json:
+        list = getEnvProjects("python", folder, ["install"])
+        for e in list:
+            dict = list[e]
+            print(dict)
+            Env = namedtuple("Env", dict.keys())(*dict.values())
+            # print(Env.name, Env.command, Env.script, Env.folder, Env.github, Env.domain)
+            scriptpath = envTemplate(Env)
+            bashScript(scriptpath, client)
+            result['command'][e] = {Env.name: Env.command}
+
     if "sourcecode" in request.json:
         list = getGithub(request.json["sourcecode"], "project", domain, folder)
         for e in list:
@@ -110,8 +121,7 @@ def deploy():
             bashScript(scriptpath, client)
             result['sourcecode'][e] = {Env.name: Env.command}
 
-    if "environment" in request.json:
-        list = getEnvProjects("python", folder, ["install"])
+        list = getEnvProjects("project", folder, ["install", "start"])
         for e in list:
             dict = list[e]
             print(dict)
@@ -120,6 +130,7 @@ def deploy():
             scriptpath = envTemplate(Env)
             bashScript(scriptpath, client)
             result['command'][e] = {Env.name: Env.command}
+
         # list = getGithub("faas-ovh/www", "project-environment", domain, folder)
         # for e in list:
         #     dict = list[e]
@@ -133,16 +144,7 @@ def deploy():
         #     bashScript(scriptpath, client)
         #     result[e] = {Env.name: Env.command}
 
-    # list = getEnvProjects(domain, ["stop", "install", "start"])
-    list = getEnvProjects("project", folder, ["install", "start"])
-    for e in list:
-        dict = list[e]
-        print(dict)
-        Env = namedtuple("Env", dict.keys())(*dict.values())
-        # print(Env.name, Env.command, Env.script, Env.folder, Env.github, Env.domain)
-        scriptpath = envTemplate(Env)
-        bashScript(scriptpath, client)
-        result['command'][e] = {Env.name: Env.command}
+
 
     client.close()
     return {'server': Server.hostname, 'ip': Server.ip, 'result': result}
