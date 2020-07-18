@@ -155,7 +155,7 @@ def deploy():
                 commands = commandList(["ls " + folder, "sh folder/" + command + ".sh"], client)
                 # scriptpath = envTemplate(Env)
                 # bashScript(scriptpath, client)
-                result['command'][e] = {folder: command}
+                result['command'][folder] = {folder: command}
                 # result['command'][e] = {Env.name: Env.command, 'commands': commands}
 
 
