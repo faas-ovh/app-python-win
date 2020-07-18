@@ -12,13 +12,13 @@ def commandList(commands, client):
     for command in commands:
         print("=" * 50, command, "=" * 50)
         stdin, stdout, stderr = client.exec_command(command)
-        # print(stdout.read().decode())
+        print(stdout.read().decode())
         err = stderr.read().decode()
         if err:
             print(err)
-        x+=1
-        result[x] = stdout
-    return result
+        # x+=1
+        # result[x] = stdout
+    # return result
 
 def bashScript(filename, client):
     # read the BASH script content from the file
