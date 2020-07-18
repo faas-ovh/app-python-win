@@ -94,10 +94,11 @@ def deploy():
             bashScript(scriptpath, client)
             result['command'][e] = {Env.name: Env.command}
 
+
     if "sourcecode" in request.json:
         print("sourcecode")
         print(request.json["sourcecode"])
-        list = getEnvList(request.json["sourcecode"], "project", folder)
+        list = getEnvList(request.json["sourcecode"], "project", folder, domain)
         for e in list:
             dict = list[e]
             print(dict)
