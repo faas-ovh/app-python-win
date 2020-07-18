@@ -17,7 +17,7 @@ def commandList(commands, client):
         if err:
             print(err)
         x+=1
-        result[x] = stdout.read()
+        result[x] = stdout
     return result
 
 def bashScript(filename, client):
