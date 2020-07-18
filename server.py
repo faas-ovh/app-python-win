@@ -145,19 +145,16 @@ def deploy():
             #     bashScript(scriptpath, client)
             #     result[e] = {Env.name: Env.command}
 
-
-
         if "command" in request.json:
             command = request.json["command"]
             if (command == "install") or (command == "update") or (command == "remove") or (command == "start") or (command == "stop"):
                 print(command)
                 # print(Env.name, Env.command, Env.script, Env.folder, Env.github, Env.domain)
-                commands = commandList(["ls " + folder, "sh folder/" + command + ".sh"], client)
+                commands = commandList(["ls " + folder, "sh " + folder + "/" + command + ".sh"], client)
                 # scriptpath = envTemplate(Env)
                 # bashScript(scriptpath, client)
                 result['command'][folder] = {folder: command}
                 # result['command'][e] = {Env.name: Env.command, 'commands': commands}
-
 
         client.close()
     return {'server': Server.hostname, 'ip': Server.ip, 'result': result}
