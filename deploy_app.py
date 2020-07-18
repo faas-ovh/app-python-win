@@ -53,9 +53,9 @@ def deploy():
 
     # Env List
     result = {
-        "sourcecode": {},
-        "environment": {},
-        "command": {},
+        'sourcecode': {},
+        'environment': {},
+        'command': {},
     }
 
     if "environment" in request.json:
