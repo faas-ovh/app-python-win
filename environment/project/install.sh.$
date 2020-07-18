@@ -1,4 +1,3 @@
 #!/bin/bash
-cd $folder
-sh install.sh
+cd $folder && sh install.sh
 ls

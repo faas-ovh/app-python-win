@@ -1,4 +1,3 @@
 #!/bin/bash
-cd $folder
-sh start.sh
+cd $folder && sh start.sh
 ls

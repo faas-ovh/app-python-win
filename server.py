@@ -96,7 +96,7 @@ def deploy():
 
 
     if "sourcecode" in request.json:
-        print("sourcecode")
+        print("sourcecode:")
         print(request.json["sourcecode"])
         list = getEnvList(request.json["sourcecode"], "project", folder, domain)
         for e in list:
@@ -120,7 +120,7 @@ def deploy():
         #     bashScript(scriptpath, client)
         #     result['sourcecode'][e] = {Env.name: Env.command}
 
-        print("project")
+        print("project:")
         print(folder)
         list = getEnvProjects("project", folder, ["install", "start"])
         for e in list:
