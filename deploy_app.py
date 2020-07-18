@@ -2,8 +2,6 @@ from flask import Flask, stream_with_context, request, Response, render_template
 from ssh import *
 
 
-
-
 def getGithub(github, project, domain, folder):
     return {
         "1": {
