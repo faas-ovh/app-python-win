@@ -38,10 +38,10 @@ def verify_password(username, password):
         return username
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET'])
 @auth.login_required
 def index():
-    # return "Hello, {}!".format(auth.current_user())
+    print(request)
     print(request.json)
     folder = domain = "monit.page"
 
@@ -70,17 +70,15 @@ def index():
 
     client.close()
     return {'server': Server.hostname, 'ip': Server.ip, 'result': result}
-    print(request.json)
 
 
 @app.route('/test')
 @auth.login_required
 def test():
-    return auth.current_user()
-
+    return "Hello, {}!".format(auth.current_user())
+    # return auth.current_user()
 
 from deploy_app import *
-
 
 # poprzenosic do innego pliku
 # stworzyc plik konfiguracyjny: txt/json/yaml/xml
