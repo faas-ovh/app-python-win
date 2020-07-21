@@ -42,6 +42,7 @@ def verify_password(username, password):
 @auth.login_required
 def index():
     print(request)
+    return request
     print(request.json)
     folder = domain = "monit.page"
 
