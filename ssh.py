@@ -13,12 +13,13 @@ def commandList(commands, client):
         print("=" * 30, command, "=" * 30)
         stdin, stdout, stderr = client.exec_command(command)
         r = stdout.read().decode()
-        print(stdout.read().decode())
         err = stderr.read().decode()
         if err:
             print(err)
         # x+=1
         result[command] = r
+
+    print(result)
     return result
 
 
