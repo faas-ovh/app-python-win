@@ -17,7 +17,7 @@ generated from source git
     my.faas.ovh?github_faas-ovh_www
 
 ## button
-<a href="https://deploy.on.faas.ovh?cdn=https://github.com/faas-ovh/www">
+<a href="https://deploy.on.faas.ovh?clone=https://github.com/faas-ovh/www">
   <img src="https://button.faas.ovh/deploy.on.faas.png" alt="Deploy on Faas">
 </a>
 
