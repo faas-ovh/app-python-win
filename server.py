@@ -155,8 +155,10 @@ def deploy():
                 commands = commandList(["cd " + folder, "ls", script], client)
                 # scriptpath = envTemplate(Env)
                 # bashScript(scriptpath, client)
-                result['command'][folder] = {folder: command}
+                result['command'][folder] = {command: script}
                 # result['command'][e] = {Env.name: Env.command, 'commands': commands}
+            else:
+                result['command'][folder] = {command: "command not recognized"}
 
         client.close()
     return {'server': Server.hostname, 'ip': Server.ip, 'result': result}
