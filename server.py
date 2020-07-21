@@ -147,7 +147,7 @@ def deploy():
 
         if "command" in request.json:
             command = request.json["command"]
-            if (command == "install") or (command == "update") or (command == "remove") or (command == "start") or (command == "stop"):
+            if (command == "install") or (command == "update") or (command == "remove") or (command == "start") or (command == "stop") or (command == "status"):
                 print(command)
                 # print(Env.name, Env.command, Env.script, Env.folder, Env.github, Env.domain)
                 # script = "sh " + folder + "/" + command + ".sh"
