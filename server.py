@@ -152,7 +152,7 @@ def deploy():
                 # print(Env.name, Env.command, Env.script, Env.folder, Env.github, Env.domain)
                 # script = "sh " + folder + "/" + command + ".sh"
                 script = "sh " + command + ".sh"
-                commands = commandList(["ls " + folder, script], client)
+                commands = commandList(["cd " + folder, "ls", script], client)
                 # scriptpath = envTemplate(Env)
                 # bashScript(scriptpath, client)
                 result['command'][folder] = {folder: command}
