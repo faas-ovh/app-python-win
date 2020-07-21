@@ -150,8 +150,8 @@ def deploy():
             if (command == "install") or (command == "update") or (command == "remove") or (command == "start") or (command == "stop") or (command == "status"):
                 print(command)
                 # print(Env.name, Env.command, Env.script, Env.folder, Env.github, Env.domain)
-                # script = "sh " + folder + "/" + command + ".sh"
-                script = "cd " + folder + " & ls & " + command + ".sh"
+                script = "sh " + folder + "/" + command + ".sh"
+                # script = "cd " + folder + " & ls & " + command + ".sh"
                 commands = commandList(["ls", script], client)
                 # scriptpath = envTemplate(Env)
                 # bashScript(scriptpath, client)

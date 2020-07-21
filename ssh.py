@@ -10,7 +10,7 @@ def commandList(commands, client):
     x=0
     # execute the commands
     for command in commands:
-        print("=" * 50, command, "=" * 50)
+        print("=" * 30, command, "=" * 30)
         stdin, stdout, stderr = client.exec_command(command)
         print(stdout.read().decode())
         err = stderr.read().decode()
