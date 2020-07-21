@@ -151,7 +151,10 @@ def deploy():
                     or (command == "start") or (command == "stop") or (command == "status"):
                 print(command)
                 # print(Env.name, Env.command, Env.script, Env.folder, Env.github, Env.domain)
-                script = "sh " + folder + "/" + command + ".sh"
+                if(command == "start"):
+                    script = "python3 " + folder +"/app.py 0.0.0.0 80"
+                else:
+                    script = "sh " + folder + "/" + command + ".sh"
                 # script = "cd " + folder + " & ls & " + command + ".sh"
                 commands = commandList(["ls", script], client)
                 # scriptpath = envTemplate(Env)
