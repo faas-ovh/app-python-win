@@ -40,7 +40,7 @@ def verify_password(username, password):
 
 
 from multiprocessing import Process
-
+import threading
 
 class processClass:
     client = ''
@@ -53,9 +53,12 @@ class processClass:
         self.command = command
         self.folder = folder
         self.env = env
-        p = Process(target=self.run, args=())
-        p.daemon = True  # Daemonize it
-        p.start()  # Start the execution
+        # p = Process(target=self.run, args=())
+        # p.daemon = True  # Daemonize it
+        # p.start()  # Start the execution
+        thread = threading.Thread(target=self.run, args=())
+        thread.daemon = True                       # Daemonize thread
+        thread.start()
 
     def run(self):
         #
