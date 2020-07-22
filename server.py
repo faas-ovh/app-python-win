@@ -69,6 +69,7 @@ class processClass:
         time.sleep(10)
         print("stop")
         clientCommand(self.client, "stop", self.folder, self.env)
+        self.client.close()
 
 
 # http://localhost/?clone=https://github.com/goethe-pl/app&cmd=start
@@ -116,12 +117,15 @@ def index():
             commands = commandList(["ls", script], client)
             result['github'][folder] = commands
             # result['clone'] = clientSourcecode(client, val, folder, result)
+            client.close()
 
         if key == "sourcecode":
             result['sourcecode'] = clientProject(client, folder, result)
+            client.close()
 
         if key == "cmd":
             result['cmd'] = clientCommand(client, val, folder, env)
+            client.close()
 
         if key == "start" or key == "stop" or key == "install" or key == "status":
             result['env'] = clientCommand(client, "stop", folder, env)
@@ -147,10 +151,10 @@ def index():
             script = "ssh-keygen -F github.com || ssh-keyscan github.com >> ~/.ssh/known_hosts"
             commands = commandList(["ls", script], client)
             result['command'][folder] = commands
+            client.close()
 
         time.sleep(1)
 
-    client.close()
     # return {'server': Server.hostname, 'ip': Server.ip, 'result': result, 'param': request.args}
     return redirect("http://" + Server.ip + "/", code=302)
 
