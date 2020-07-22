@@ -67,7 +67,7 @@ class processClass:
         #
         # This might take several minutes to complete
         # print(self.command)
-        clientCommand(self.client, self.command, self.folder, self.env)
+        # clientCommand(self.client, self.command, self.folder, self.env)
         # time.sleep(10)
         # print("stop")
         # clientCommand(self.client, "stop", self.folder, self.env)
@@ -77,7 +77,7 @@ class processClass:
         # p.terminate()
         # p.join()
         # Start foo as a process
-        p = multiprocessing.Process(target=clientCommand, name="clientCommand", args=(self.client, "stop", self.folder, self.env))
+        p = multiprocessing.Process(target=clientCommand, name="clientCommand", args=(self.client, self.command, self.folder, self.env))
         p.start()
         # Wait 10 seconds for foo
         time.sleep(10)
