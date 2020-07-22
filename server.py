@@ -256,7 +256,8 @@ def clientCommand(client, command, folder, env):
         # print(Env.name, Env.command, Env.script, Env.folder, Env.github, Env.domain)
         if (command == "start"):
             if (env == 'node'):
-                script = "cd " + folder + " && node server.js"
+                # script = "cd " + folder + " && node server.js"
+                script = "sh " + folder + "/" + command + ".sh"
             else:
                 script = "python3 " + folder + "/app.py 0.0.0.0 80"
         elif (command == "stop"):
