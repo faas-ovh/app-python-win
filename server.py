@@ -60,6 +60,7 @@ class processClass:
     def run(self):
         #
         # This might take several minutes to complete
+        print(self.client, self.command, self.folder, self.env)
         clientCommand(self.client, self.command, self.folder, self.env)
 
 
