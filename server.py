@@ -68,9 +68,9 @@ class processClass:
         # This might take several minutes to complete
         # print(self.command)
         clientCommand(self.client, self.command, self.folder, self.env)
-        time.sleep(5)
+        # time.sleep(5)
         # print("stop")
-        clientCommand(self.client, "stop", self.folder, self.env)
+        # clientCommand(self.client, "stop", self.folder, self.env)
         # p = multiprocessing.Process(target=clientCommand, name="clientCommand", args=(client, key, folder, env))
         # p.start()
         # time.sleep(5)
