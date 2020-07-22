@@ -64,10 +64,10 @@ class processClass:
     def run(self):
         #
         # This might take several minutes to complete
-        print(self.command)
+        # print(self.command)
         clientCommand(self.client, self.command, self.folder, self.env)
         time.sleep(10)
-        print("stop")
+        # print("stop")
         clientCommand(self.client, "stop", self.folder, self.env)
         self.client.close()
 
