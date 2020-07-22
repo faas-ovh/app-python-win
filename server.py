@@ -71,19 +71,22 @@ class processClass:
         # time.sleep(10)
         # print("stop")
         # clientCommand(self.client, "stop", self.folder, self.env)
-        self.client.close()
-        # Start foo as a process
-        # p = multiprocessing.Process(target=clientCommand, name="clientCommand", args=(self.client, self.command, self.folder, self.env))
+        # p = multiprocessing.Process(target=clientCommand, name="clientCommand", args=(client, key, folder, env))
         # p.start()
-        #
-        # # Wait 10 seconds for foo
-        # time.sleep(10)
-        #
-        # # Terminate foo
+        # time.sleep(5)
         # p.terminate()
-        #
-        # # Cleanup
         # p.join()
+        # Start foo as a process
+        p = multiprocessing.Process(target=clientCommand, name="clientCommand", args=(self.client, self.command, self.folder, self.env))
+        p.start()
+        # Wait 10 seconds for foo
+        time.sleep(10)
+        # Terminate foo
+        p.terminate()
+        # Cleanup
+        p.join()
+        self.client.close()
+
 
 
 # http://localhost/?clone=https://github.com/goethe-pl/app&cmd=start
@@ -144,23 +147,11 @@ def index():
         if key == "start" or key == "stop" or key == "install" or key == "status":
             result['env'] = clientCommand(client, "stop", folder, env)
 
-            p = multiprocessing.Process(target=clientCommand, name="clientCommand", args=(client, key, folder, env))
-            p.start()
-
-            # Wait 10 seconds for foo
-            time.sleep(5)
-
-            # Terminate foo
-            p.terminate()
-
-            # Cleanup
-            p.join()
-            #
-            # try:
-            #     begin = processClass(client, key, folder, env)
-            # except:
-            #     # abort(500)
-            #     return redirect("http://" + Server.ip + "/", code=500)
+            try:
+                begin = processClass(client, key, folder, env)
+            except:
+                # abort(500)
+                return redirect("http://" + Server.ip + "/", code=500)
 
             # result['env'] = clientCommand(client, key, folder, env)
             # return redirect("http://" + Server.ip + "/", code=307)
