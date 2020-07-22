@@ -124,7 +124,7 @@ def index():
                 return redirect("http://" + Server.ip + "/", code=500)
 
             # result['env'] = clientCommand(client, key, folder, env)
-            return redirect("http://" + Server.ip + "/", code=307)
+            # return redirect("http://" + Server.ip + "/", code=307)
 
         if key == "git":
             script = "apt-get install git -y"
