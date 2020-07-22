@@ -57,7 +57,6 @@ class processClass:
         p.daemon = True  # Daemonize it
         p.start()  # Start the execution
 
-
     def run(self):
         #
         # This might take several minutes to complete
@@ -367,4 +366,4 @@ if __name__ == '__main__':
     # main(sys.argv[1:])
     # context = ('ssl.cert', 'ssl.key')
     # app.run(host='0.0.0.0', port=80, ssl_context=context)
-    app.run(host=host, port=port)
+    app.run(host=host, port=port, threaded=True)
