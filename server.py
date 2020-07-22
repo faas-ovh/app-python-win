@@ -39,6 +39,31 @@ def verify_password(username, password):
         return username
 
 
+from multiprocessing import Process
+
+
+class processClass:
+    client = ''
+    command = ''
+    folder = ''
+    env = ''
+
+    def __init__(self, client, command, folder, env):
+        self.client = client
+        self.command = command
+        self.folder = folder
+        self.env = env
+        p = Process(target=self.run, args=())
+        p.daemon = True  # Daemonize it
+        p.start()  # Start the execution
+
+
+    def run(self):
+        #
+        # This might take several minutes to complete
+        clientCommand(self.client, self.command, self.folder, self.env)
+
+
 # http://localhost/?clone=https://github.com/goethe-pl/app&cmd=start
 # http://localhost/?clone=https://github.com/goethe-pl/app&install&start
 # http://localhost/?github=goethe-pl/app&install&start
@@ -93,8 +118,14 @@ def index():
 
         if key == "start" or key == "stop" or key == "install" or key == "status":
             result['env'] = clientCommand(client, "stop", folder, env)
-            redirect("http://" + Server.ip + "/", code=307)
-            result['env'] = clientCommand(client, key, folder, env)
+            try:
+                begin = processClass(client, key, folder, env)
+            except:
+                # abort(500)
+                return redirect("http://" + Server.ip + "/", code=500)
+
+            # result['env'] = clientCommand(client, key, folder, env)
+            return redirect("http://" + Server.ip + "/", code=307)
 
         if key == "git":
             script = "apt-get install git -y"
