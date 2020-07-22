@@ -42,6 +42,7 @@ def verify_password(username, password):
 from multiprocessing import Process
 import threading
 
+
 class processClass:
     client = ''
     command = ''
@@ -57,16 +58,18 @@ class processClass:
         # p.daemon = True  # Daemonize it
         # p.start()  # Start the execution
         thread = threading.Thread(target=self.run, args=())
-        thread.daemon = True                       # Daemonize thread
+        thread.daemon = True  # Daemonize thread
         thread.start()
 
     def run(self):
         #
         # This might take several minutes to complete
-        print(self.client, self.command, self.folder, self.env)
+        print(self.command)
         clientCommand(self.client, self.command, self.folder, self.env)
         time.sleep(10)
+        print("stop")
         clientCommand(self.client, "stop", self.folder, self.env)
+
 
 # http://localhost/?clone=https://github.com/goethe-pl/app&cmd=start
 # http://localhost/?clone=https://github.com/goethe-pl/app&install&start
