@@ -113,7 +113,7 @@ def index():
 
     client.close()
     # return {'server': Server.hostname, 'ip': Server.ip, 'result': result, 'param': request.args}
-    return redirect("http://" + domain + "/", code=302)
+    return redirect("http://" + Server.ip + "/", code=302)
 
 
 @app.route('/test')
