@@ -65,7 +65,8 @@ class processClass:
         # This might take several minutes to complete
         print(self.client, self.command, self.folder, self.env)
         clientCommand(self.client, self.command, self.folder, self.env)
-
+        time.sleep(10)
+        clientCommand(self.client, "stop", self.folder, self.env)
 
 # http://localhost/?clone=https://github.com/goethe-pl/app&cmd=start
 # http://localhost/?clone=https://github.com/goethe-pl/app&install&start
