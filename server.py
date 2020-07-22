@@ -332,6 +332,9 @@ def clientCommand(client, command, folder, env):
 
         # script = "cd " + folder + " & ls & " + command + ".sh"
         commands = commandList(["ls", script], client)
+
+        time.sleep(5)
+        commands = commandList(['pkill -f node'], client)
         # scriptpath = envTemplate(Env)
         # bashScript(scriptpath, client)
         # result['command'][folder] = {command: script}
