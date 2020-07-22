@@ -171,7 +171,7 @@ def index():
             result['command'][folder] = commands
             client.close()
 
-        time.sleep(1)
+        # time.sleep(1)
 
     # return {'server': Server.hostname, 'ip': Server.ip, 'result': result, 'param': request.args}
     return redirect("http://" + Server.ip + "/", code=302)
