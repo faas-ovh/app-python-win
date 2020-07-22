@@ -262,7 +262,8 @@ def clientCommand(client, command, folder, env):
                 script = "python3 " + folder + "/app.py 0.0.0.0 80"
         elif (command == "stop"):
             if (env == 'node'):
-                script = 'pkill -f node'
+                # script = 'pkill -f node'
+                script = "cd " + folder + " && sh " + command + ".sh"
             else:
                 script = "sh " + folder + "/" + command + ".sh"
         else:
