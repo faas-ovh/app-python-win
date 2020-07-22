@@ -257,7 +257,7 @@ def clientCommand(client, command, folder, env):
         if (command == "start"):
             if (env == 'node'):
                 # script = "cd " + folder + " && node server.js"
-                script = "cd " + folder + "&& sh " + command + ".sh"
+                script = "cd " + folder + " && sh " + command + ".sh"
             else:
                 script = "python3 " + folder + "/app.py 0.0.0.0 80"
         elif (command == "stop"):
@@ -267,7 +267,7 @@ def clientCommand(client, command, folder, env):
                 script = "sh " + folder + "/" + command + ".sh"
         else:
             # script = "sh " + folder + "/" + command + ".sh"
-            script = "cd " + folder + "&& sh " + command + ".sh"
+            script = "cd " + folder + " && sh " + command + ".sh"
 
         # script = "cd " + folder + " & ls & " + command + ".sh"
         commands = commandList(["ls", script], client)
