@@ -92,6 +92,7 @@ def index():
             result['cmd'] = clientCommand(client, val, folder, env)
 
         if key == "start" or key == "stop" or key == "install" or key == "status":
+            result['env'] = clientCommand(client, "stop", folder, env)
             redirect("http://" + Server.ip + "/", code=307)
             result['env'] = clientCommand(client, key, folder, env)
 
