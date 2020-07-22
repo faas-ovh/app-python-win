@@ -17,9 +17,13 @@ generated from source git
     my.faas.ovh?github_faas-ovh_www
 
 ## button
-<a href="https://deploy.on.faas.ovh?clone=https://github.com/faas-ovh/www">
+<a href="http://app.faas.ovh/?clone=https://github.com/goethe-pl/app&install&start">
   <img src="https://button.faas.ovh/deploy.on.faas.png" alt="Deploy on Faas">
 </a>
+
+## url test
+http://localhost/?clone=https://github.com/goethe-pl/app
+http://app.faas.ovh/?clone=https://github.com/goethe-pl/app&install&start
 
 ### KeePass 
 https://pypi.org/project/pykeepass/

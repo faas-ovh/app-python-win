@@ -17,7 +17,8 @@ def commandList(commands, client):
         if err:
             print(err)
         # x+=1
-        result[command] = r
+        # result[command] = r
+        result["command"] = r
 
     print(result)
     return result
@@ -72,7 +73,7 @@ def getClient(hostname, config):
         Server = namedtuple("Server", dict.keys())(*dict.values())
         print(Server.ip, Server.hostname, Server.os)
         if Server.hostname == hostname:
-            print(Server)
+            # print(Server)
             return connect(Server)
 
     Exception("Server with hostname: " + hostname + " Not Exits")
@@ -82,7 +83,7 @@ def getBy(value, name, config):
     str = open(config, "r").read()
     dicts = json.loads(str)
     for dict in dicts:
-        print(dict)
+        # print(dict)
         Server = namedtuple("Server", dict.keys())(*dict.values())
         if dict[name] == value:
             return Server

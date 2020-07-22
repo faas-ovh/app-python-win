@@ -1,5 +1,6 @@
+import time
 import jsonify as jsonify
-from flask import Flask, stream_with_context, request, Response, render_template, make_response
+from flask import Flask, stream_with_context, request, Response, render_template, make_response, redirect, url_for
 from flask_httpauth import HTTPBasicAuth
 from werkzeug.security import generate_password_hash, check_password_hash
 from config import *
@@ -38,39 +39,81 @@ def verify_password(username, password):
         return username
 
 
+# http://localhost/?clone=https://github.com/goethe-pl/app&cmd=start
+# http://localhost/?clone=https://github.com/goethe-pl/app&install&start
+# http://localhost/?github=goethe-pl/app&install&start
+# http://localhost/?start
+
 @app.route('/', methods=['GET'])
 @auth.login_required
 def index():
-    print(request)
-    return request
-    print(request.json)
+    print(request.args)
     folder = domain = "monit.page"
 
     ## SSH connection
     Server = getBy(domain, 'hostname', config_server)
     client = connect(Server)
 
+    env = 'node'
+
     # Env List
     result = {
         'sourcecode': {},
+        'clone': {},
+        'github': {},
         'environment': {},
         'command': {},
+        'cmd': {},
+        'env': {},
     }
 
     # if "environment" in request.json:
     #     environment = request.json["environment"]
     #     clientEnvironment(client, environment, folder, result)
 
-    if "sourcecode" in request.json:
-        sourcecode = request.json["sourcecode"]
-        clientSourcecode(client, sourcecode, folder, result)
+    for key in request.args:
+        print("==")
+        print(key)
+        val = request.args[key]
+        print(val)
 
-    if "command" in request.json:
-        command = request.json["command"]
-        clientCommand(client, command, folder, result)
+        if key == "github":
+            # script = "git --quiet clone git@github.com:" + val + ".git " + folder
+            # script = "git clone git@github.com:" + val + ".git " + folder
+            script = "git clone https://github.com/" + val + ".git " + folder
+            commands = commandList(["ls", script], client)
+            result['github'][folder] = commands
+            # result['clone'] = clientSourcecode(client, val, folder, result)
+
+        if key == "sourcecode":
+            result['sourcecode'] = clientProject(client, folder, result)
+
+        if key == "cmd":
+            result['cmd'] = clientCommand(client, val, folder, env)
+
+        if key == "start" or key == "stop" or key == "install" or key == "status":
+            redirect("http://" + Server.ip + "/", code=307)
+            result['env'] = clientCommand(client, key, folder, env)
+
+        if key == "git":
+            script = "apt-get install git -y"
+            commands = commandList(["ls", script], client)
+            result['command'][folder] = commands
+            script = "git --version"
+            commands = commandList(["ls", script], client)
+            result['command'][folder] = commands
+            # 'ssh-keygen -R hostname'
+            # script = 'if [ ! -n "$(grep "^bitbucket.org " ~/.ssh/known_hosts)" ]; then ssh-keyscan bitbucket.org >> ~/.ssh/known_hosts 2>/dev/null; fi'
+            'echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config'
+            script = "ssh-keygen -F github.com || ssh-keyscan github.com >> ~/.ssh/known_hosts"
+            commands = commandList(["ls", script], client)
+            result['command'][folder] = commands
+
+        time.sleep(1)
 
     client.close()
-    return {'server': Server.hostname, 'ip': Server.ip, 'result': result}
+    # return {'server': Server.hostname, 'ip': Server.ip, 'result': result, 'param': request.args}
+    return redirect("http://" + domain + "/", code=302)
 
 
 @app.route('/test')
@@ -79,7 +122,9 @@ def test():
     return "Hello, {}!".format(auth.current_user())
     # return auth.current_user()
 
+
 from deploy_app import *
+
 
 # poprzenosic do innego pliku
 # stworzyc plik konfiguracyjny: txt/json/yaml/xml
@@ -112,15 +157,16 @@ def deploy():
 
         if "environment" in request.json:
             environment = request.json["environment"]
-            clientEnvironment(client, environment, folder, result)
+            result = clientEnvironment(client, environment, folder, result)
 
         if "sourcecode" in request.json:
             sourcecode = request.json["sourcecode"]
-            clientSourcecode(client, sourcecode, folder, result)
+            result = clientSourcecode(client, sourcecode, folder, result)
+            result = clientProject(client, folder, result)
 
         if "command" in request.json:
             command = request.json["command"]
-            clientCommand(client, command, folder, result)
+            result = clientCommand(client, command, folder, result)
 
         client.close()
     return {'server': Server.hostname, 'ip': Server.ip, 'result': result}
@@ -138,6 +184,7 @@ def clientEnvironment(client, environment, folder, result):
         scriptpath = envTemplate(Env)
         bashScript(scriptpath, client)
         result['command'][e] = {Env.name: Env.command}
+    return result
 
 
 def clientSourcecode(client, sourcecode, folder, result):
@@ -165,7 +212,10 @@ def clientSourcecode(client, sourcecode, folder, result):
     #     scriptpath = sourcecodeTemplate(Env)
     #     bashScript(scriptpath, client)
     #     result['sourcecode'][e] = {Env.name: Env.command}
+    return result
 
+
+def clientProject(client, folder, result):
     print("project:")
     print(folder)
     list = getEnvProjects("project", folder, ["install", "start"])
@@ -192,27 +242,41 @@ def clientSourcecode(client, sourcecode, folder, result):
     #     createFileFromTemplate(scriptpath, template, {'domain': Env.domain, 'folder': Env.folder, 'github': Env.github})
     #     bashScript(scriptpath, client)
     #     result[e] = {Env.name: Env.command}
+    return result
 
-def clientCommand(client, command, folder, result):
+
+def clientCommand(client, command, folder, env):
     print("command:")
     print(command)
+    result = {}
     if (command == "install") or (command == "update") or (command == "remove") \
             or (command == "start") or (command == "stop") or (command == "status"):
         print(command)
         # print(Env.name, Env.command, Env.script, Env.folder, Env.github, Env.domain)
         if (command == "start"):
-            script = "python3 " + folder + "/app.py 0.0.0.0 80"
+            if (env == 'node'):
+                script = "cd " + folder + " && node server.js"
+            else:
+                script = "python3 " + folder + "/app.py 0.0.0.0 80"
+        elif (command == "stop"):
+            if (env == 'node'):
+                script = 'pkill -f node'
+            else:
+                script = "sh " + folder + "/" + command + ".sh"
         else:
             script = "sh " + folder + "/" + command + ".sh"
+
         # script = "cd " + folder + " & ls & " + command + ".sh"
         commands = commandList(["ls", script], client)
         # scriptpath = envTemplate(Env)
         # bashScript(scriptpath, client)
         # result['command'][folder] = {command: script}
-        result['command'][folder] = commands
+        result[folder] = commands
         # result['command'][e] = {Env.name: Env.command, 'commands': commands}
     else:
-        result['command'][folder] = {command: "command not recognized"}
+        result[folder] = {command: "command not recognized"}
+
+    return result
 
 
 # pobieranie z git env
